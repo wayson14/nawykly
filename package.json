@@ -1,0 +1,28 @@
+{
+  "name": "pomocny",
+  "version": "1.0.0",
+  "description": "Pomodoro app.",
+  "main": "index.js",
+  "scripts": {
+    "serve": "NODE_ENV=dev nodemon app.js",
+    "build": "parcel build frontend/index.js",
+    "watch": "parcel watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wayson14/pomocny.git"
+  },
+  "author": "wayson14",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wayson14/pomocny/issues"
+  },
+  "homepage": "https://github.com/wayson14/pomocny#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mysql": "^2.18.1",
+    "parcel": "^2.8.3"
+  }
+}
