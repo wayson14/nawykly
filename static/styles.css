@@ -21,6 +21,10 @@
 }
 * {
     box-sizing: border-box;
+    /* transition: background-color 0.25s,
+        color 0.25s,
+        font-style 0.25s,
+        border-bottom 0.25s; */
 }
 body {
     margin: 0;
@@ -58,7 +62,7 @@ body {
 }
 
 /* ==================== */ 
-/* BUTTONS               */
+/* BUTTONS AND A        */
 /* ==================== */
 .button {
     padding: 0.75rem;
@@ -87,6 +91,11 @@ body {
     font-style: italic;
 }
 
+a {
+    color: var(--white);
+    text-decoration: none;
+}
+
 /* ==================== */ 
 /* FORMS                */
 /* ==================== */
@@ -101,37 +110,74 @@ body {
     align-items: center;
 }
 
-.form-container > form{
-
+.form-container {
     width: clamp(300px, 30vw, 200px);
     background-color: var(--blue);
+    box-shadow: 4px 4px black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form-container > form{
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     /* border-radius: 5px; */
-    box-shadow: 4px 4px black;
+    
 }
-input {
+.form-container > form > input {
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: var(--m);
+    width: 70%;
+    margin-top: 1em;
+    padding: 0.1em;
+}
+
+/* .form_container > form > .button:hover {
+    color: var(--yellow);
+
 }
 .form-container > form > .button {
-    color: white;
+    color: var(--white);
     border-top: none;
     border-left: none;
     border-right: none;
     margin: 1em;
 
+} */
+
+.form-container > form > a {
+    font-size: var(--s);
+    text-decoration: solid;
+    margin-bottom: 0.3em;
 }
-.form_container > form > .button:hover {
+
+.form-container > form > a:hover {
+    font-size: var(--s);
     color: var(--yellow);
-
+    text-decoration: dashed;
+    font-style: italic;
+    
 }
-.input-field {
+
+.submit {
+    color: var(--white);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    margin: 1em;
+}
+.submit:hover{
+    color: var(--yellow);
+}
+.error-message{
+    color: rgb(255, 118, 118);
     width: 70%;
-    margin-top: 1em
+    margin-top: 1em;
+    margin-bottom: 0;
 }
-
 .logged {
     display: none;
 }

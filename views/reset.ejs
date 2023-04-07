@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password reset</title>
-</head>
-<body>
-    <h2>Reset your password</h2>
-    <div><%= message %></div>
+<%- include('template_header_form') -%>
     <form action="/reset" method="post">
-        <input type="email" name="email" placeholder="Your email address">
-        <input type="submit">
+        <input type="email" name="email" placeholder="Your email address" required>
+        <input class="submit button" type="submit" value="Recover">
         <a href="/new_password">I have already obtained my reset token</a>
+        <a href="/login">Back to the login page</a>
 
     </form>
-    
-</body>
-</html>
+<%- include('template_footer_form') -%>
