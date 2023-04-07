@@ -12,23 +12,21 @@
     <div class="navbar">
         <!-- <h1 class="banner-text">Witaj w <i>nawykly</i></h1> -->
 
-        <div class="banner-text">witaj w nawykly</div>
+        <div class="banner-text">nawykly</div>
         </div>
     </div>
-
+    <div class="message-prompt"><%= message %></div>
     <div class="login">
-        <h1>Login</h1>
-        <form action="/auth" method="post">
-            <label for="username">
-                <!-- font awesome icon -->
-                <i class="fas fa-user"></i>
-            </label>
+        
+        <h1>Register</h1>
+        <form action="/register" method="post">
+
             <input type="text" name="username" placeholder="Username" id="username" required>
-            <label for="password">
-                <i class="fas fa-lock"></i>
-            </label>
+            <input type="email" name="email" placeholder="E-mail" id="email" required>
             <input type="password" name="password" placeholder="Password" id="password" required>
-            <input type="submit" value="Login">
+            <input type="password" name="password_repeat" placeholder="Repeat Password" id="password_repeat" required>
+            <a href="/login">Already have an account? Login here!</a>
+            <input type="submit" value="Register">
         </form>
     </div>
     
