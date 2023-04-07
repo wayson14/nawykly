@@ -61,9 +61,7 @@ const connection = mysql.createConnection({
 /* ======================== */
 
 app.get("/test", (req, res) => {
-	res.status(200);
-	token = generateToken();
-	res.send({ data: token });
+	res.render("form_template", {message: ""})
 });
 
 app.get("/hash", (req, res) => {

@@ -1,18 +1,23 @@
 :root {
 
-    /*COLORS*/
+    
+    /* COLORS */
     --green: #539165;
     --blue: #3F497F;
     --yellow: #F7C04A;
     --white: #F8F5E4;
 
-    /*TYPOGRAPHY*/
+    /* TYPOGRAPHY */
     --s: 0.75rem;
     --m: 1rem;
     --l: 1.25rem;
     --xl: 1.5rem;
 
-    box-sizing: border-box;
+    /* SIZES OF ELEMENTS */
+    --navbar-height: 60px;
+    /* box-sizing: border-box; */
+
+
 }
 * {
     box-sizing: border-box;
@@ -24,7 +29,9 @@ body {
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
-/* NAVBAR (GÓRA) */
+/* ==================== */ 
+/* NAVBAR               */
+/* ==================== */
 .navbar {
     display: flex;
     flex-direction: row;
@@ -33,7 +40,7 @@ body {
     padding: 1rem;
     background-color: var(--blue);
     /* padding: 1em; */
-    box-shadow: 1px 4px black;
+    box-shadow: 4px 4px black;
     align-items: center;
     justify-content: space-between;
     height: 60px
@@ -49,6 +56,10 @@ body {
     font-style: italic;
     font-size: var(--l);
 }
+
+/* ==================== */ 
+/* BUTTONS               */
+/* ==================== */
 .button {
     padding: 0.75rem;
     /* border: 2px solid var(--white);
@@ -56,6 +67,9 @@ body {
     border-bottom: 2px solid var(--white);
     text-align: center;
     width: 100px;
+    background: none;
+    box-shadow: none;
+    
     /* height: 60px; */
 
 }
@@ -71,6 +85,51 @@ body {
         border-bottom 0.25s;
     cursor: pointer;
     font-style: italic;
+}
+
+/* ==================== */ 
+/* FORMS                */
+/* ==================== */
+
+.main {
+    
+    width: 100vw;
+    height: calc(100vh - var(--navbar-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container > form{
+
+    width: clamp(300px, 30vw, 200px);
+    background-color: var(--blue);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* border-radius: 5px; */
+    box-shadow: 4px 4px black;
+}
+input {
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.form-container > form > .button {
+    color: white;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    margin: 1em;
+
+}
+.form_container > form > .button:hover {
+    color: var(--yellow);
+
+}
+.input-field {
+    width: 70%;
+    margin-top: 1em
 }
 
 .logged {
