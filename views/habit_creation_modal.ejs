@@ -1,0 +1,21 @@
+<div class="habit-creation-modal center">
+    <div class="container center">
+            <div class="habit-creation-form">
+                <div id="inputContainer">
+                <input value="Medytacja" type="text" id="name" placeholder="habit name" />
+                <input value="Jaka jest każdy widzi" type="text" id="description" placeholder="description" />
+                <input value="Powrót do domu" type="text" id="cue" placeholder="habit cue" />
+                <input value="Seans filmowy wieczorem" type="text" id="reward" placeholder="reward" />
+                <input value="5min" type="text" id="lowbar" placeholder="lowbar" />
+                <input value="25min" type="text" id="highbar" placeholder="highbar" />
+                <input value="mtw" type="text" id="frequency" placeholder="frequency" />
+            </div>
+                <div class="container">
+                    <button id="closeModalButton" class="full-button" onclick="closeHabitCreationModal()">
+                        Close
+                    </button>
+                    <button id="sendHabitButton" class="full-button" onclick="saveHabit()">Add</button>
+                </div>
+            </div>
+    </div>
+</div>

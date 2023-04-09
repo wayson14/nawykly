@@ -6,15 +6,18 @@ const path = require("path");
 const session = require("express-session");
 const mysql = require("mysql");
 const ejs = require("ejs");
-const services = require("./services")
 const bcrypt = require("bcrypt")
 const nodemailer = require("nodemailer");
+
+
 
 /* ======================== */
 /* SERVER PROPERITIES		*/
 /* ======================== */
 const PORT = 3000;
 const app = express();
+
+
 
 /* ======================== */
 /* APP SETUPS			*/
@@ -51,6 +54,8 @@ const connection = mysql.createConnection({
 	database: "nawykly",
 });
 
+require('./api')(app, connection)
+
 /* ======================== */
 /* NODEMAILER SETUP			*/
 /* ======================== */
@@ -60,6 +65,9 @@ const connection = mysql.createConnection({
 /* TEST ENDPOINT			*/
 /* ======================== */
 
+app.get("/dev", (req, res) => {
+	res.render("dashboard", {username: "dev"})
+})
 app.get("/test", (req, res) => {
 	res.render("form_template", {message: ""})
 });
@@ -85,7 +93,7 @@ app.post("/hash", (req, res) => {
 /* ======================== */
 app.get("/", (req, res) => {
 	if (req.session.loggedin) {
-		res.render("index");
+		res.render("dashboard");
 	} else {
 		res.redirect("/login");
 	}
@@ -99,8 +107,8 @@ app.get("/", (req, res) => {
 app.get("/dashboard", (req, res) => {
 	if (req.session.loggedin) {
 		res.status(200);
-		// res.sendFile(path.join(__dirname, '/frontend/index.html'));
-		res.render("index", { username: req.session.username });
+		// res.sendFile(path.join(__dirname, '/frontend/dashboard.html'));
+		res.render("dashboard", { username: req.session.username });
 	} else {
 		res.redirect("/login");
 	}
@@ -120,8 +128,13 @@ app.get("/session_details", function (req, res) {
 /* LOGIN, REGISTER, LOGOUT	*/
 /* ======================== */
 app.get("/login", (req, res) => {
-	res.status(200);
-	res.render("login", { message: "" });
+	if(req.session.loggedin){
+		res.redirect("dashboard")
+	}
+	else {
+		res.status(200);
+		res.render("login", { message: "" });
+	}
 });
 
 app.get("/register", (req, res) => {
@@ -152,9 +165,9 @@ app.post("/login", async function (req, res) {
 		[username],
 		function (error, results, fields) {
 			if (error) {
-				console.log("FAILURE" + err)
+				console.log("FAILURE" + error)
 				res.render("login", {
-					message: "DB issues!",
+					message: error,
 				})
 			}
 
@@ -167,6 +180,7 @@ app.post("/login", async function (req, res) {
 			else {
 				console.log(results)
 				storedPassword = results[0].password
+				userId = results[0].id
 				bcrypt.compare(password, storedPassword)
 					.then(result => {
 						if (result) {
@@ -189,6 +203,7 @@ app.post("/login", async function (req, res) {
 					})
 			}
 		});
+		
 });
 
 app.post("/register", function (req, res) {
@@ -223,7 +238,7 @@ app.post("/register", function (req, res) {
 									message = "User with provided email already exists!";
 								}
 							} else {
-								message = "Unknown database error.";
+								message = error.message;
 							}
 							res.render("register", { message: message });
 						} else {
@@ -233,6 +248,7 @@ app.post("/register", function (req, res) {
 						}
 					}
 				);
+				
 			})
 			.catch(err => console.log("HASHING ERROR: " + err))
 
@@ -292,6 +308,7 @@ app.post("/reset", (req, res) => {
 			//sending email on provided address
 		}
 	} )
+
 })
 
 app.get("/new_password", (req, res) => {
@@ -345,6 +362,7 @@ app.post("/new_password", (req, res) => {
 		
 			
 		})
+	
 	}
 })
 

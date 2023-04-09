@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./styles.css">
     <title>nawyk.ly</title>
 </head>
-<body onload="init()">
+<body onload="() => init(); fetchHabits()">
     <div class="navbar">
         <!-- <h1 class="banner-text">Witaj w <i>nawykly</i></h1> -->
 
@@ -25,8 +25,16 @@
         </div>
         
     </div>
-    <div class="main"></div>
+    <div class="main">
+        <div class="container">
+            <%- include('habits') -%>
+            <%- include('calendar') -%>           
+        </div>
+    </div>
     
     <script defer type="text/javascript" src="index.js"></script>
+</div>
+<script defer type="text/javascript" src="habits.js"></script>
+
 </body>
 </html>
