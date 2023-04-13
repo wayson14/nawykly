@@ -366,6 +366,9 @@ app.post("/new_password", (req, res) => {
 	}
 })
 
+app.get("/pomodoro", (req, res) => {
+	res.send({message: "Not implemented yet!"})
+})
 /* ======================== */
 /* SERVER 					*/
 /* ======================== */

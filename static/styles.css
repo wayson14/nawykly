@@ -119,7 +119,7 @@ body {
     border-radius: 5px;
     border-bottom: 2px solid var(--white);
     text-align: center;
-    width: 100px;
+    
     background-color:var(--yellow);
     box-shadow: 2px 2px black;
     transition: background-color 0.25s,
@@ -289,6 +289,8 @@ a {
     min-height: 450px;
     max-height: calc(100vh - var(--navbar-height) - 70px);
     overflow-y: auto;
+    padding-right:5px;
+
 }
 @media (max-width: 770px){
     #habitList{
@@ -471,4 +473,8 @@ a {
     display: flex;
     flex-direction: column;
     
+  }
+
+  .new-habit {
+    width: 100%;
   }

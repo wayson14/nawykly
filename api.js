@@ -76,7 +76,7 @@ function sendData(req, res, data){
 }
 
 function sendError(req, res, error){
-    res.status(500)
+    // res.status(500)
     res.send({error: error})
 }
 
@@ -414,8 +414,8 @@ module.exports = function (app, connection) {
                     addHabitActivity()
                 }
                 else {
-                    checkIfHabitOwner(req, req.habit_id, connection, (res => {
-                        if (!res){
+                    checkIfHabitOwner(req, req.habit_id, connection, (data => {
+                        if (!data){
                             sendError(req, res, "Permission denied!")
                         }
                         else {

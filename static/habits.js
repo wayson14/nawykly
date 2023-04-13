@@ -143,7 +143,9 @@ function createHabitList(data) {
                     }
                     if (done){
                         hour = new Date(activityData.filter(a => a.habit_id === el.id)[0]["activity_datetime"])
-                        hour = hour.getHours() + ":" + hour.getMinutes()
+                        hour = (hour.getHours()<10 ? "0"+hour.getHours() :
+                        hour.getHours()) + ":" + (hour.getMinutes()<10 ? "0"+hour.getMinutes() :
+                        hour.getMinutes())
     
                     }
                     habitList.innerHTML += `
@@ -177,7 +179,7 @@ function createHabitList(data) {
             `
                 });
                 habitList.innerHTML += `
-        <button class="full-button" onclick="showHabitCreationModal()">New habit</button>
+        <button class="full-button new-habit" onclick="showHabitCreationModal()">New habit</button>
         `;
             }
 
