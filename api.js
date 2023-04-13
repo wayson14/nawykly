@@ -50,6 +50,11 @@ function checkIfHabitOwner(req, habitId, connection, callback) {
         })
 }
 
+
+
+/* ======================== */
+/* QUERRY UTILITY       	*/
+/* ======================== */
 function createPatchQuery(tableName, rowId, keys, values, indexColName = "id") {
     q = "UPDATE " + tableName + " SET "
     for (i = 0; i < keys.length; i++) {
@@ -60,7 +65,20 @@ function createPatchQuery(tableName, rowId, keys, values, indexColName = "id") {
     return q
 }
 
+/* ======================== */
+/* RESPONSE-MAKERS      	*/
+/* ======================== */
 
+function sendData(req, res, data){
+    res.send(JSON.stringify(
+        {data: data}))
+    res.status(200)
+}
+
+function sendError(req, res, error){
+    res.status(500)
+    res.send({error: error})
+}
 
 
 module.exports = function (app, connection) {
@@ -68,7 +86,7 @@ module.exports = function (app, connection) {
     /* BASIC API            	*/
     /* ======================== */
     app.get('/api', (req, res) => {
-        res.send({ test: 'test' });
+        res.send({ test: 'test'});
     })
 
     app.get('/api/users', (req, res) => {
@@ -149,7 +167,7 @@ module.exports = function (app, connection) {
                 [req.session.username],
                 function (error, results, fields) {
                     if (error) {
-                        res.send({ message: error.message })
+                        res.send({ message: error })
                     }
                     else {
                         res.send({ data: results })
@@ -325,6 +343,133 @@ module.exports = function (app, connection) {
         
     })
 
+    app.post("/api/undo_habit_activity", (req, res) => {
+        if(req.session.loggedin) {
+            connection.query(`DELETE FROM habit_activity 
+            WHERE habit_id = ? 
+            AND habit_activity.activity_datetime > CURRENT_DATE() 
+            AND habit_activity.activity_datetime < DATE_ADD( CURRENT_DATE(), INTERVAL 1 DAY);`,
+            [req.body.habit_id],
+            function (error, results, fields) {
+                if (error){
+                    sendError(req, res, error)
+                }
+                else {
+                    sendData(req, res, results)
+                }
+            })
+        }
+    })
+    app.get("/api/today_done_habit_ids", (req, res) => {
+        function getTodayActivity() {
+            connection.query(`SELECT habit_activity.*
+            FROM habit_activity INNER JOIN user
+            ON habit_activity.user_id = user.id
+            WHERE user.username = ?
+            AND habit_activity.activity_datetime > CURRENT_DATE()
+            AND habit_activity.activity_datetime < DATE_ADD( CURRENT_DATE(), INTERVAL 1 DAY); `,
+            [req.session.username],
+            function (error, results, fields){
+                if (error) {
+                    sendError(req, res, error)
+                }
+                else {
+                    console.log(results)
+                    sendData(req, res, results)
+                }
+            })
+        }
+        if (req.session.loggedin){
+            getTodayActivity()
+
+        }
+        else {
+            sendError(req, res, "Only for logged in users")
+        }
+    })
+    app.post("/api/habit_activity", (req, res) => {
+        function addHabitActivity() {
+            console.log('activity')
+            connection.query(`INSERT INTO habit_activity 
+            SELECT NULL, user.id, ?, NOW() FROM user WHERE user.username = ?;`,
+            [req.body.habit_id, req.session.username],
+            function (error, results, fields) {
+                if(error){
+                    sendError(req, res, error)
+                }
+                else {
+                    sendData(req, res, results)
+                }
+            })
+        }
+        if (!req.session.loggedin){
+            sendError(req, res, "User not logged in!")
+        }
+        else {
+            checkPermissionLevel(req, connection, (permission_level) => {
+                if (permission_level == -1){
+                    sendError(req, res, "User not logged in!")
+                }
+                else if (permission_level == 2){
+                    addHabitActivity()
+                }
+                else {
+                    checkIfHabitOwner(req, req.habit_id, connection, (res => {
+                        if (!res){
+                            sendError(req, res, "Permission denied!")
+                        }
+                        else {
+                            addHabitActivity()
+                        }
+                    }))
+                }
+                
+               
+            })
+
+            
+        }
+    })
+    app.get("/api/habit_activity/:range", (req, res) => {
+        if(!req.session.loggedin){
+            sendError(req, res, "You need to be logged in")
+        }
+        else {
+            if (req.params.range ==  "week") //TODO: change this
+            {
+                connection.query(`SELECT habit_activity.*
+                FROM habit_activity INNER JOIN user
+                ON habit_activity.user_id = user.id
+                WHERE user.username = ?
+                AND habit_activity.activity_datetime > DATE_ADD( CURRENT_DATE(), INTERVAL -8 DAY) 
+                AND habit_activity.activity_datetime < DATE_ADD( CURRENT_DATE(), INTERVAL 1 DAY);`,
+                [req.session.username],
+                function (error, results, fields){
+                    if(error) sendError(req, res, error)
+                    else sendData(req, res, results)
+                })
+            }
+            else if (req.params.range == "month")
+            {
+                connection.query(`SELECT habit_activity.*
+                FROM habit_activity INNER JOIN user
+                ON habit_activity.user_id = user.id
+                WHERE user.username = ?
+                AND MONTH(habit_activity.activity_datetime) = MONTH(now())
+                AND YEAR(habit_activity.activity_datetime) = YEAR(now());`,
+                [req.session.username],
+                function (error, results, fields){
+                    if(error) sendError(req, res, error)
+                    else {
+                        console.log("HABIT RESULTS")
+                        console.log(results)
+                        sendData(req, res, results)}
+                })
+            }
+        }
+    })
+
+    
 }
 
 

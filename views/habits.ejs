@@ -1,6 +1,10 @@
-<div id="habitList" class="vertical container" onload="() => fetchHabits()">
-    <h1>your habits:</h1>
-    <button class="full-button" onclick="showHabitCreationModal()">New habit</button>
+<div class="vertical container">
+    <h1>habits</h1>
     <%- include('habit_creation_modal') -%>
+    <div id="habitList">
+
+    </div>
+    
 </div>
 <script defer type="text/javascript" src="habits.js"></script>
+<script defer type="text/javascript" src="calendar_new.js"></script>

@@ -11,7 +11,9 @@
     <div class="navbar">
         <!-- <h1 class="banner-text">Witaj w <i>nawykly</i></h1> -->
 
-        <div id="bannerText" class="banner-text">welcome, <%= username %></div>
+        <div id="bannerText" class="banner-text">welcome, <%= username %>, today is
+            <%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(new Date()) %>
+        </div>
         <div class="horizontal-container post-login">
             <div class="navbar-element button primary">
                 dashboard
@@ -28,7 +30,9 @@
     <div class="main">
         <div class="container">
             <%- include('habits') -%>
-            <%- include('calendar') -%>           
+            <!-- <%- include('calendar') -%>            -->
+            <%- include('calendar_new') -%>           
+
         </div>
     </div>
     
